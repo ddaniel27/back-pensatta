@@ -9,9 +9,12 @@ import (
 	"os/signal"
 	"pensatta/internal/core/user"
 	"pensatta/internal/infrastructure/api/handler"
+	"pensatta/internal/infrastructure/api/validators"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 )
 
 type depenedencies struct {
@@ -45,6 +48,10 @@ func (a *App) setupServer() {
 		gin.Recovery(),
 		gin.Logger(),
 	)
+
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("role", validators.ValidateRole)
+	}
 
 	baseGroup := a.Server.Group("/api")
 	setupHealthCheckRoute(baseGroup)

@@ -27,12 +27,12 @@ func NewService() *Service {
 	}
 }
 
-func (s *Service) CreateUser(_ context.Context, u domain.User) error {
+func (s *Service) CreateUser(_ context.Context, u domain.User) (string, error) {
 	u.Username = s.createUsername(u.FirstName, u.LastName, u.InstitutionID, u.ListNumber)
 	u.Password = s.createPassword(u.Password)
 	u.DateJoined = time.Now()
 
-	return nil
+	return u.Username, nil
 }
 
 func (s *Service) GetUser(_ context.Context, id uint64) (domain.User, error) {

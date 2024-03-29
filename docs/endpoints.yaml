@@ -1,0 +1,75 @@
+openapi: "3.0.1"
+info:
+  version: "1.0.0"
+  title: "Trafilea Technical Test"
+  description: "This app handles records for numbers and stores their respective categories"
+
+servers:
+  - url: http://localhost:3000/api
+
+tags:
+  - name: "Register"
+    description: "Register a new user"
+paths:
+  /register:
+    post:
+      tags:
+        - "Register"
+      summary: "Create new user"
+      description: "Send a user to create it in our system"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: "object"
+                  properties:
+                    first_name:
+                      type: "string"
+                      default: "Daniel"
+                    last_name:
+                      type: "string"
+                      default: "Dorado"
+                    list_number:
+                      type: "number"
+                      default: 123
+                    institution_code:
+                      type: "string"
+                      default: "0101"
+                    password:
+                      type: "string"
+                      default: "test1234"
+                    
+      responses:
+        "201":
+          description: "Content created"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      username:
+                        type: "string"
+                        default: "0101160DADO123"
+        "400":
+          description: "Invalid request"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      error:
+                        type: "string"
+        "500":
+          description: "Internal error"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      error:
+                        type: "string"

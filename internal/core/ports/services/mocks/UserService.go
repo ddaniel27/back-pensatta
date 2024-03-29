@@ -15,21 +15,31 @@ type UserService struct {
 }
 
 // CreateUser provides a mock function with given fields: ctx, u
-func (_m *UserService) CreateUser(ctx context.Context, u domain.User) error {
+func (_m *UserService) CreateUser(ctx context.Context, u domain.User) (string, error) {
 	ret := _m.Called(ctx, u)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateUser")
 	}
 
-	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, domain.User) error); ok {
+	var r0 string
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, domain.User) (string, error)); ok {
+		return rf(ctx, u)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, domain.User) string); ok {
 		r0 = rf(ctx, u)
 	} else {
-		r0 = ret.Error(0)
+		r0 = ret.Get(0).(string)
 	}
 
-	return r0
+	if rf, ok := ret.Get(1).(func(context.Context, domain.User) error); ok {
+		r1 = rf(ctx, u)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // DeleteUser provides a mock function with given fields: ctx, id
