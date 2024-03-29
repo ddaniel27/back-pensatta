@@ -1,8 +1,8 @@
 openapi: "3.0.1"
 info:
   version: "1.0.0"
-  title: "Trafilea Technical Test"
-  description: "This app handles records for numbers and stores their respective categories"
+  title: "Pensatta"
+  description: "This api handles all pensatta backend logic"
 
 servers:
   - url: http://localhost:3000/api

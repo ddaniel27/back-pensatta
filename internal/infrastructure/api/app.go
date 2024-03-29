@@ -35,7 +35,7 @@ func NewApp() *App {
 }
 
 func (a *App) setupDependencies() {
-	userService := user.NewService()
+	userService := user.NewService(nil)
 
 	a.depenedencies = depenedencies{
 		registerHandler: handler.NewRegisterHandler(userService),

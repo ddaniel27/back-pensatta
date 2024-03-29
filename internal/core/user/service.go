@@ -9,6 +9,7 @@ import (
 	"math"
 	mathRand "math/rand"
 	"pensatta/internal/core/domain"
+	"pensatta/internal/core/ports/repositories"
 	"strings"
 	"time"
 
@@ -17,13 +18,15 @@ import (
 
 type Service struct {
 	randInstance *mathRand.Rand
+	userRepo     repositories.UserRepository
 }
 
-func NewService() *Service {
+func NewService(ur repositories.UserRepository) *Service {
 	randInstance := mathRand.New(mathRand.NewSource(time.Now().UnixNano()))
 
 	return &Service{
 		randInstance: randInstance,
+		userRepo:     ur,
 	}
 }
 
@@ -31,6 +34,10 @@ func (s *Service) CreateUser(_ context.Context, u domain.User) (string, error) {
 	u.Username = s.createUsername(u.FirstName, u.LastName, u.InstitutionID, u.ListNumber)
 	u.Password = s.createPassword(u.Password)
 	u.DateJoined = time.Now()
+
+	if err := s.userRepo.CreateUser(u); err != nil {
+		return "", err
+	}
 
 	return u.Username, nil
 }
