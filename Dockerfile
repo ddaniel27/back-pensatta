@@ -1,6 +1,6 @@
 FROM golang:1.20-bullseye AS builder
 
-WORKDIR /app
+WORKDIR /wd
 
 COPY go.mod .
 COPY go.sum .
