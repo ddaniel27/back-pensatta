@@ -12,4 +12,5 @@ type UserService interface {
 	GetUserByRole(ctx context.Context, role string) ([]domain.User, error)
 	UpdateUser(ctx context.Context, u domain.User) error
 	DeleteUser(ctx context.Context, id uint64) error
+	ValidateCredentials(ctx context.Context, username, password string) (domain.User, error)
 }

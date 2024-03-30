@@ -10,6 +10,7 @@ import (
 	mathRand "math/rand"
 	"pensatta/internal/core/domain"
 	"pensatta/internal/core/ports/repositories"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,12 +31,12 @@ func NewService(ur repositories.UserRepository) *Service {
 	}
 }
 
-func (s *Service) CreateUser(_ context.Context, u domain.User) (string, error) {
-	u.Username = s.createUsername(u.FirstName, u.LastName, u.InstitutionID, u.ListNumber)
+func (s *Service) CreateUser(ctx context.Context, u domain.User) (string, error) {
+	u.Username = s.createUsername(u.FirstName, u.LastName, u.InstitutionCode, u.ListNumber)
 	u.Password = s.createPassword(u.Password)
 	u.DateJoined = time.Now()
 
-	if err := s.userRepo.Create(u); err != nil {
+	if err := s.userRepo.Create(ctx, u); err != nil {
 		return "", err
 	}
 
@@ -62,11 +63,49 @@ func (s *Service) DeleteUser(_ context.Context, id uint64) error {
 	return nil
 }
 
-func (s *Service) createUsername(firstname, lastname string, institutionCode, listNumber uint64) string {
+func (s *Service) ValidateCredentials(ctx context.Context, username, password string) (domain.User, error) {
+	user, err := s.userRepo.GetByUsername(ctx, username)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	if !s.validatePassword(password, user.Password) {
+		return domain.User{}, fmt.Errorf("invalid credentials")
+	}
+
+	user.LastLogin = time.Now()
+	if err := s.userRepo.Update(ctx, user); err != nil {
+		return domain.User{}, err
+	}
+
+	user.Password = ""
+	return user, nil
+}
+
+func (s *Service) validatePassword(password, encryptedPassword string) bool {
+	parts := strings.Split(encryptedPassword, "$")
+	if len(parts) != 4 {
+		return false
+	}
+
+	passLength := 32
+	iterations, salt, hash := parts[1], parts[2], parts[3]
+	iter, err := strconv.Atoi(iterations)
+	if err != nil {
+		return false
+	}
+
+	hashBytes := pbkdf2.Key([]byte(password), []byte(salt), iter, passLength, sha256.New)
+	newHash := base64.StdEncoding.EncodeToString(hashBytes)
+
+	return newHash == hash
+}
+
+func (s *Service) createUsername(firstname, lastname, institutionCode string, listNumber uint64) string {
 	randomNumber := s.randInstance.Float64()
 	randomNumber = math.Floor(randomNumber*(999-100) + 100)
 
-	username := fmt.Sprintf("%d%.0f%s%s%d", institutionCode, randomNumber, firstname[:2], lastname[:2], listNumber)
+	username := fmt.Sprintf("%s%.0f%s%s%d", institutionCode, randomNumber, firstname[:2], lastname[:2], listNumber)
 	return strings.ToUpper(username)
 }
 

@@ -1,22 +1,22 @@
 package middlewares
 
 import (
-	"pensatta/internal/core/domain"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
-func AdminUser() gin.HandlerFunc {
+func GetSession() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get("pensatta-user")
-		if user == nil || user.(domain.User).Role != "ADMIN" {
-			c.JSON(401, gin.H{"error": "Unauthorized"})
-			c.Abort()
 
+		if user == nil {
+			c.JSON(401, gin.H{"logged": false, "user": map[string]string{}})
+			c.Abort()
 			return
 		}
+
+		c.Set("user", user)
 
 		c.Next()
 	}

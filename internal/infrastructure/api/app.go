@@ -14,6 +14,7 @@ import (
 
 type depenedencies struct {
 	registerHandler *handler.RegisterHandler
+	loginHandler    *handler.LoginHandler
 }
 
 type infrastructure struct {
@@ -48,12 +49,4 @@ func (a *App) StartApp() {
 	signal.Notify(quit, os.Interrupt)
 	<-quit
 	a.stopApp()
-}
-
-func getPortFallback(env string, fallback string) string {
-	port := os.Getenv(env)
-	if port == "" {
-		return fallback
-	}
-	return port
 }

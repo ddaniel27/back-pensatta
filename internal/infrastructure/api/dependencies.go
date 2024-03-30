@@ -10,5 +10,6 @@ func (a *App) setupDependencies() {
 
 	a.depenedencies = depenedencies{
 		registerHandler: handler.NewRegisterHandler(userService),
+		loginHandler:    handler.NewLoginHandler(userService),
 	}
 }
