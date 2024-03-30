@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS pensatta_user (
     first_name VARCHAR(150) NOT NULL,
     last_name VARCHAR(150) NOT NULL,
     role role_enum NOT NULL,
-    institution_id BIGINT,
-    list_number INTEGER,
+    institution_id BIGINT NOT NULL,
+    list_number INTEGER NOT NULL,
     date_joined TIMESTAMP WITH TIME ZONE NOT NULL,
     last_login TIMESTAMP WITH TIME ZONE
 );

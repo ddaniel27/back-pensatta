@@ -3,10 +3,10 @@ package repositories
 import "pensatta/internal/core/domain"
 
 type UserRepository interface {
-	CreateUser(u domain.User) error
-	GetUser(id uint64) (domain.User, error)
-	GetUsers() ([]domain.User, error)
-	GetUserByRole(role string) ([]domain.User, error)
-	UpdateUser(u domain.User) error
-	DeleteUser(id uint64) error
+	Create(u domain.User) error
+	GetByID(id uint64) (domain.User, error)
+	Get() ([]domain.User, error)
+	GetByRole(role string) ([]domain.User, error)
+	Update(u domain.User) error
+	Delete(id uint64) error
 }

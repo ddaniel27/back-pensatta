@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '3000:3000'
+    env_file:
+      - dev.env
     restart: unless-stopped
     volumes:
       - ./:/wd

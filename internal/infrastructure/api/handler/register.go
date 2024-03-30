@@ -48,12 +48,12 @@ func (uh *RegisterHandler) CreateUser(c *gin.Context) {
 
 func toUserDomain(user registerBody) domain.User {
 	return domain.User{
-		FirstName:     user.FirstName,
-		LastName:      user.LastName,
-		ListNumber:    user.ListNumber,
-		Role:          strings.ToUpper(user.Role),
-		InstitutionID: user.InstitutionCode,
-		Password:      user.Password,
+		FirstName:       user.FirstName,
+		LastName:        user.LastName,
+		ListNumber:      user.ListNumber,
+		Role:            strings.ToUpper(user.Role),
+		InstitutionCode: user.InstitutionCode,
+		Password:        user.Password,
 	}
 }
 

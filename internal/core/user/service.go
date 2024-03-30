@@ -35,7 +35,7 @@ func (s *Service) CreateUser(_ context.Context, u domain.User) (string, error) {
 	u.Password = s.createPassword(u.Password)
 	u.DateJoined = time.Now()
 
-	if err := s.userRepo.CreateUser(u); err != nil {
+	if err := s.userRepo.Create(u); err != nil {
 		return "", err
 	}
 
@@ -62,11 +62,11 @@ func (s *Service) DeleteUser(_ context.Context, id uint64) error {
 	return nil
 }
 
-func (s *Service) createUsername(firstname, lastname, institutionCode string, listNumber uint64) string {
+func (s *Service) createUsername(firstname, lastname string, institutionCode, listNumber uint64) string {
 	randomNumber := s.randInstance.Float64()
 	randomNumber = math.Floor(randomNumber*(999-100) + 100)
 
-	username := fmt.Sprintf("%s%.0f%s%s%d", institutionCode, randomNumber, firstname[:2], lastname[:2], listNumber)
+	username := fmt.Sprintf("%d%.0f%s%s%d", institutionCode, randomNumber, firstname[:2], lastname[:2], listNumber)
 	return strings.ToUpper(username)
 }
 
