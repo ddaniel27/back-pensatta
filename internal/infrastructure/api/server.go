@@ -33,7 +33,7 @@ func (a *App) setupServer() {
 	a.Server.Use(
 		gin.Recovery(),
 		gin.Logger(),
-		sessions.Sessions("pensatta-session", sessionStore),
+		sessions.Sessions(domain.SessionKey, sessionStore),
 	)
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {

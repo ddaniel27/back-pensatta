@@ -14,4 +14,7 @@ func (a *App) setupRoutes(g *gin.RouterGroup) {
 	loginGroup := g.Group("/login")
 	loginGroup.POST("", middlewares.SetSession(), a.loginHandler.CreateLogin)
 	loginGroup.GET("", middlewares.GetSession(), a.loginHandler.GetLogin)
+
+	logoutGroup := g.Group("/logout")
+	logoutGroup.DELETE("", middlewares.DeleteSession())
 }
