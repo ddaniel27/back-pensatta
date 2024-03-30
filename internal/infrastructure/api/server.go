@@ -6,16 +6,21 @@ import (
 	"net/http"
 	"pensatta/internal/infrastructure/api/validators"
 
+	"github.com/gin-contrib/sessions"
+	gormsession "github.com/gin-contrib/sessions/gorm"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 )
 
 func (a *App) setupServer() {
+	sessionStore := gormsession.NewStore(a.DB, true, []byte("secret"))
+
 	a.Server = gin.New()
 	a.Server.Use(
 		gin.Recovery(),
 		gin.Logger(),
+		sessions.Sessions("pensatta", sessionStore),
 	)
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {

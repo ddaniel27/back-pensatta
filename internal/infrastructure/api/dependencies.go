@@ -6,7 +6,7 @@ import (
 )
 
 func (a *App) setupDependencies() {
-	userService := user.NewService(a.userRepository)
+	userService := user.NewService(a.infrastructure.userRepository)
 
 	a.depenedencies = depenedencies{
 		registerHandler: handler.NewRegisterHandler(userService),

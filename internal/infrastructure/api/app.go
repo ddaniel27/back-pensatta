@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type depenedencies struct {
@@ -21,6 +22,7 @@ type infrastructure struct {
 
 type App struct {
 	Server *gin.Engine
+	DB     *gorm.DB
 	depenedencies
 	infrastructure
 }

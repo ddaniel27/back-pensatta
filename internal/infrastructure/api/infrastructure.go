@@ -13,8 +13,8 @@ func (a *App) setupInfrastructure() {
 		log.Fatalf("Error loading config: %v", err)
 	}
 
-	db := postgres.NewGormPostgresClient(*config)
-	userRepository := postgres.NewUserRepository(db)
+	a.DB = postgres.NewGormPostgresClient(*config)
+	userRepository := postgres.NewUserRepository(a.DB)
 
 	a.infrastructure = infrastructure{
 		userRepository: userRepository,

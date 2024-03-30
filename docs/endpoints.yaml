@@ -10,6 +10,8 @@ servers:
 tags:
   - name: "Register"
     description: "Register a new user"
+  - name: "Login"
+    description: "Sessions for registered users"
 paths:
   /register:
     post:
@@ -73,3 +75,138 @@ paths:
                     properties:
                       error:
                         type: "string"
+  /login:
+    get:
+      tags:
+        - "Login"
+      summary: "Get current session, fails if no session found"
+      description: "Get current session for a user, fails if no active session found in session storage"
+      responses:
+        "200":
+          description: "Session found"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      logged:
+                        type: "boolean"
+                        default: true
+                      user:
+                        type: "object"
+                        properties:
+                          username:
+                            type: "string"
+                            default: "0101160DADO123"
+                          first_name:
+                            type: "string"
+                            default: "Daniel"
+                          last_name:
+                            type: "string"
+                            default: "Dorado"
+                          date_joined:
+                            type: "string"
+                            default: "2023-04-24T05:43:58.000Z"
+                          last_login:
+                            type: "string"
+                            default: "2024-03-29T19:40:19.234Z"
+                          role:
+                            type: "string"
+                            default: "STUDENT"
+                          institution_id:
+                            type: "number"
+                            default: 1
+                          list_number:
+                            type: "number"
+                            default: 1234
+                          language:
+                            type: "string"
+                            default: "es"
+        "401":
+          description: "Session not found"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      logged:
+                        type: "boolean"
+                        default: false
+                      user:
+                        type: "object"
+    post:
+      tags:
+        - "Login"
+      summary: "Create a new session in the system for provided username/password"
+      description: "Create a new session with username/password"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: "object"
+                  properties:
+                    username:
+                      type: "string"
+                      default: "0101160DADO123"
+                    password:
+                      type: "string"
+                      default: "test1234"
+      responses:
+        "200":
+          description: "Session was stablished"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      logged:
+                        type: "boolean"
+                        default: true
+                      user:
+                        type: "object"
+                        properties:
+                          username:
+                            type: "string"
+                            default: "0101160DADO123"
+                          first_name:
+                            type: "string"
+                            default: "Daniel"
+                          last_name:
+                            type: "string"
+                            default: "Dorado"
+                          date_joined:
+                            type: "string"
+                            default: "2023-04-24T05:43:58.000Z"
+                          last_login:
+                            type: "string"
+                            default: "2024-03-29T19:40:19.234Z"
+                          role:
+                            type: "string"
+                            default: "STUDENT"
+                          institution_id:
+                            type: "number"
+                            default: 1
+                          list_number:
+                            type: "number"
+                            default: 1234
+                          language:
+                            type: "string"
+                            default: "es"
+        "401":
+          description: "Username/Password invalid"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      logged:
+                        type: "boolean"
+                        default: false
+                      user:
+                        type: "object"
