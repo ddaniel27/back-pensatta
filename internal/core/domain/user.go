@@ -11,6 +11,7 @@ type User struct {
 	Role            string    `json:"role"`
 	InstitutionID   uint64    `json:"institution_id"`
 	InstitutionCode string    `json:"institution_code,omitempty"`
+	Language        string    `json:"language"`
 	DateJoined      time.Time `json:"date_joined,omitempty"`
 	LastLogin       time.Time `json:"last_login,omitempty"`
 }

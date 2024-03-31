@@ -13,12 +13,14 @@ import (
 )
 
 type depenedencies struct {
-	registerHandler *handler.RegisterHandler
-	loginHandler    *handler.LoginHandler
+	registerHandler    *handler.RegisterHandler
+	loginHandler       *handler.LoginHandler
+	institutionHandler *handler.InstitutionHandler
 }
 
 type infrastructure struct {
-	userRepository repositories.UserRepository
+	userRepository        repositories.UserRepository
+	institutionRepository repositories.InstitutionRepository
 }
 
 type App struct {

@@ -8,7 +8,7 @@ import (
 
 func (a *App) setupRoutes(g *gin.RouterGroup) {
 	registerGroup := g.Group("/register")
-	registerGroup.Use(middlewares.AdminUser())
+	// registerGroup.Use(middlewares.AdminUser())
 	registerGroup.POST("", a.registerHandler.CreateUser)
 
 	loginGroup := g.Group("/login")
@@ -17,4 +17,10 @@ func (a *App) setupRoutes(g *gin.RouterGroup) {
 
 	logoutGroup := g.Group("/logout")
 	logoutGroup.DELETE("", middlewares.DeleteSession())
+
+	institutionGroup := g.Group("/institution")
+	institutionGroup.Use(middlewares.AdminUser())
+	institutionGroup.POST("", a.institutionHandler.CreateInstitution)
+	institutionGroup.GET("", a.institutionHandler.GetInstitutions)
+	institutionGroup.DELETE("/:id", a.institutionHandler.DeleteInstitution)
 }
