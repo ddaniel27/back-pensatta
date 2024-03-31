@@ -40,7 +40,11 @@ func (ir *InstitutionRepository) Create(ctx context.Context, institution domain.
 func (ir *InstitutionRepository) Get(ctx context.Context) ([]domain.Institution, error) {
 	var institutions []domain.Institution
 
-	if err := ir.db.Find(&institutions).Error; err != nil {
+	if err := ir.db.WithContext(ctx).Raw(`
+	SELECT i.*, COALESCE(l.value, 'es') AS language
+	FROM pensatta_institution i
+	LEFT JOIN pensatta_languages l ON i.id = l.institution_id`).
+		Scan(&institutions).Error; err != nil {
 		return nil, err
 	}
 

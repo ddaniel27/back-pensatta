@@ -57,7 +57,12 @@ func (r *UserRepository) GetByRole(ctx context.Context, role string) ([]domain.U
 
 func (r *UserRepository) GetByUsername(ctx context.Context, username string) (domain.User, error) {
 	var user domain.User
-	if err := r.db.WithContext(ctx).Table("pensatta_user").First(&user, user.Username).Error; err != nil {
+	if err := r.db.WithContext(ctx).Raw(`
+ SELECT u.*, COALESCE(l.value, 'es') AS language
+ FROM pensatta_user u
+ LEFT JOIN pensatta_languages l ON u.institution_id = l.institution_id
+ WHERE u.username = $1`, username).
+		Scan(&user).Error; err != nil {
 		return domain.User{}, err
 	}
 
@@ -79,13 +84,14 @@ func (r *UserRepository) Delete(ctx context.Context, id uint64) error {
 
 func toUserModel(u domain.User) models.UserModel {
 	return models.UserModel{
-		Username:   u.Username,
-		Password:   u.Password,
-		FirstName:  u.FirstName,
-		LastName:   u.LastName,
-		Role:       u.Role,
-		ListNumber: u.ListNumber,
-		DateJoined: u.DateJoined,
-		LastLogin:  u.LastLogin,
+		Username:      u.Username,
+		Password:      u.Password,
+		FirstName:     u.FirstName,
+		LastName:      u.LastName,
+		InstitutionID: u.InstitutionID,
+		Role:          u.Role,
+		ListNumber:    u.ListNumber,
+		DateJoined:    u.DateJoined,
+		LastLogin:     u.LastLogin,
 	}
 }
