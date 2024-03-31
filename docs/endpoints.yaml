@@ -12,6 +12,10 @@ tags:
     description: "Register a new user"
   - name: "Login"
     description: "Sessions for registered users"
+  - name: "Logout"
+    description: "Drop current session"
+  - name: "Institution"
+    description: "Handle all institutions"
 paths:
   /register:
     post:
@@ -210,3 +214,120 @@ paths:
                         default: false
                       user:
                         type: "object"
+  /logout:
+    delete:
+      tags:
+        - "Logout"
+      summary: "Drops current session in the system"
+      description: "Drops current session"
+      responses:
+        "200":
+          description: "Session was deleted"
+  
+  /institution:
+    get:
+      tags:
+        - "Institution"
+      summary: "Gets all institutions"
+      description: "Get all institutions registered in system"
+      responses:
+        "200":
+          description: "Institutions was retrieved"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      institutions:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            name:
+                              type: "string"
+                              default: "Institution Name"
+                            email:
+                              type: "string"
+                              default: "institution@email.com"
+                            country:
+                              type: "string"
+                              default: "colombia"
+                            province:
+                              type: "string"
+                              default: "bogota"
+                            city:
+                              type: "string"
+                              default: "bogota"
+                            code:
+                              type: "string"
+                              default: "0101"
+                            language:
+                              type: "string"
+                              default: "es"
+        "500":
+          description: "Internal error"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      error:
+                        type: "string"
+    post:
+      tags:
+        - "Institution"
+      summary: "Creates new institution"
+      description: "Creates a new institution with provided info"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: "object"
+                  properties:
+                    name:
+                      type: "string"
+                      default: "Institution Name"
+                    email:
+                      type: "string"
+                      default: "institution@email.com"
+                    country:
+                      type: "string"
+                      default: "colombia"
+                    province:
+                      type: "string"
+                      default: "bogota"
+                    city:
+                      type: "string"
+                      default: "bogota"
+                    code:
+                      type: "string"
+                      default: "0101"
+                    language:
+                      type: "string"
+                      default: "es"
+      responses:
+        "201":
+          description: "Institution created successfully"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      created:
+                        type: "boolean"
+                        default: "true"
+        "500":
+          description: "Internal error"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      error:
+                        type: "string"
