@@ -19,7 +19,7 @@ func (a *App) setupRoutes(g *gin.RouterGroup) {
 	logoutGroup.DELETE("", middlewares.DeleteSession())
 
 	institutionGroup := g.Group("/institution")
-	institutionGroup.Use(middlewares.AdminUser())
+	institutionGroup.Use(middlewares.AdminPermissions())
 	institutionGroup.POST("", a.institutionHandler.CreateInstitution)
 	institutionGroup.GET("", a.institutionHandler.GetInstitutions)
 	institutionGroup.DELETE("/:id", a.institutionHandler.DeleteInstitution)

@@ -64,12 +64,12 @@ func DeleteSession() gin.HandlerFunc {
 	}
 }
 
-func AdminUser() gin.HandlerFunc {
+func TeacherPermissions() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get(domain.SessionUserKey)
 
-		if user == nil || user.(domain.User).Role != "ADMIN" {
+		if user == nil || !roleEqualOrAbove(user.(domain.User).Role, "TEACHER") {
 			c.JSON(401, gin.H{"error": "Unauthorized"})
 			c.Abort()
 
@@ -78,4 +78,47 @@ func AdminUser() gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+func CoordinatorPermissions() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		user := session.Get(domain.SessionUserKey)
+
+		if user == nil || !roleEqualOrAbove(user.(domain.User).Role, "COORDINATOR") {
+			c.JSON(401, gin.H{"error": "Unauthorized"})
+			c.Abort()
+
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func AdminPermissions() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		user := session.Get(domain.SessionUserKey)
+
+		if user == nil || !roleEqualOrAbove(user.(domain.User).Role, "ADMIN") {
+			c.JSON(401, gin.H{"error": "Unauthorized"})
+			c.Abort()
+
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func roleEqualOrAbove(currentRole, thresholdRole string) bool {
+	roles := map[string]int8{
+		"STUDENT":     1,
+		"TEACHER":     2,
+		"COORDINATOR": 3,
+		"ADMIN":       4,
+	}
+
+	return roles[currentRole] >= roles[thresholdRole]
 }
