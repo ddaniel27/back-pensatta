@@ -17,6 +17,7 @@ type depenedencies struct {
 	loginHandler       *handler.LoginHandler
 	institutionHandler *handler.InstitutionHandler
 	exerciseHandler    *handler.ExerciseHandler
+	profileHandler     *handler.ProfileHandler
 }
 
 type infrastructure struct {

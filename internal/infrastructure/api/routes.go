@@ -27,4 +27,8 @@ func (a *App) setupRoutes(g *gin.RouterGroup) {
 	exerciseGroup := g.Group("/exercise")
 	exerciseGroup.Use(middlewares.GetSession())
 	exerciseGroup.POST("", a.exerciseHandler.CreateExercise)
+
+	profileGroup := g.Group("/profile")
+	profileGroup.Use(middlewares.GetSession())
+	profileGroup.GET("/exercises", a.profileHandler.GetAllExercisesForUser)
 }

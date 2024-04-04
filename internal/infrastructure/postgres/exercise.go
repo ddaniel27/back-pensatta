@@ -56,7 +56,7 @@ func (er *ExerciseRepository) Create(ctx context.Context, exercise domain.Exerci
 
 func (er *ExerciseRepository) GetByUserID(ctx context.Context, userID uint64) ([]domain.Exercise, error) {
 	var exercises []domain.Exercise
-	err := er.db.Where("user_id = ?", userID).Find(&exercises).Error
+	err := er.db.Where("user_id = ?", userID).Table("pensatta_record").Find(&exercises).Error
 	return exercises, err
 }
 
@@ -75,6 +75,6 @@ func toRecordModel(exercise domain.Exercise, userID uint64) models.RecordModel {
 		ExerciseID: exercise.ID,
 		Score:      uint64(exercise.Score),
 		Time:       exercise.Time,
-		Date:       time.Now(),
+		Date:       time.Now().UTC(),
 	}
 }

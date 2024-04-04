@@ -17,5 +17,6 @@ func (a *App) setupDependencies() {
 		loginHandler:       handler.NewLoginHandler(userService),
 		institutionHandler: handler.NewInstitutionHandler(institutionService),
 		exerciseHandler:    handler.NewExerciseHandler(exerciseService),
+		profileHandler:     handler.NewProfileHandler(exerciseService),
 	}
 }
