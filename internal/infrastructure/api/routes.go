@@ -23,4 +23,8 @@ func (a *App) setupRoutes(g *gin.RouterGroup) {
 	institutionGroup.POST("", a.institutionHandler.CreateInstitution)
 	institutionGroup.GET("", a.institutionHandler.GetInstitutions)
 	institutionGroup.DELETE("/:id", a.institutionHandler.DeleteInstitution)
+
+	exerciseGroup := g.Group("/exercise")
+	exerciseGroup.Use(middlewares.GetSession())
+	exerciseGroup.POST("", a.exerciseHandler.CreateExercise)
 }

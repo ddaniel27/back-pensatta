@@ -16,11 +16,13 @@ type depenedencies struct {
 	registerHandler    *handler.RegisterHandler
 	loginHandler       *handler.LoginHandler
 	institutionHandler *handler.InstitutionHandler
+	exerciseHandler    *handler.ExerciseHandler
 }
 
 type infrastructure struct {
 	userRepository        repositories.UserRepository
 	institutionRepository repositories.InstitutionRepository
+	exerciseRepository    repositories.ExerciseRepository
 }
 
 type App struct {

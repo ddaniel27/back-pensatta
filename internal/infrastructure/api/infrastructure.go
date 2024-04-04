@@ -16,10 +16,12 @@ func (a *App) setupInfrastructure() {
 	a.DB = postgres.NewGormPostgresClient(*config)
 	userRepository := postgres.NewUserRepository(a.DB)
 	institutionRepository := postgres.NewInstitutionRepository(a.DB)
+	exerciseRepository := postgres.NewExerciseRepository(a.DB)
 
 	a.infrastructure = infrastructure{
 		userRepository:        userRepository,
 		institutionRepository: institutionRepository,
+		exerciseRepository:    exerciseRepository,
 	}
 }
 
