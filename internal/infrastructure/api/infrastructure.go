@@ -17,11 +17,13 @@ func (a *App) setupInfrastructure() {
 	userRepository := postgres.NewUserRepository(a.DB)
 	institutionRepository := postgres.NewInstitutionRepository(a.DB)
 	exerciseRepository := postgres.NewExerciseRepository(a.DB)
+	metricsRepository := postgres.NewMetricsRepository(a.DB)
 
 	a.infrastructure = infrastructure{
 		userRepository:        userRepository,
 		institutionRepository: institutionRepository,
 		exerciseRepository:    exerciseRepository,
+		metricsRepository:     metricsRepository,
 	}
 }
 

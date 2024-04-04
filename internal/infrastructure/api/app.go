@@ -24,6 +24,7 @@ type infrastructure struct {
 	userRepository        repositories.UserRepository
 	institutionRepository repositories.InstitutionRepository
 	exerciseRepository    repositories.ExerciseRepository
+	metricsRepository     repositories.MetricsRepository
 }
 
 type App struct {

@@ -31,4 +31,5 @@ func (a *App) setupRoutes(g *gin.RouterGroup) {
 	profileGroup := g.Group("/profile")
 	profileGroup.Use(middlewares.GetSession())
 	profileGroup.GET("/exercises", a.profileHandler.GetAllExercisesForUser)
+	profileGroup.GET("/metrics", a.profileHandler.GetMetricsForUser)
 }
