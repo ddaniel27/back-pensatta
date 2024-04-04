@@ -16,6 +16,8 @@ tags:
     description: "Drop current session"
   - name: "Institution"
     description: "Handle all institutions"
+  - name: "Exercise"
+    description: "Handle the exercise creation and metrics update"
 paths:
   /register:
     post:
@@ -331,3 +333,43 @@ paths:
                     properties:
                       error:
                         type: "string"
+  
+  /exercise:
+    post:
+      tags:
+        - "Exercise"
+      summary: "Creates new exercise"
+      description: "Creates a new exercise with provided info"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: "object"
+                  properties:
+                    score:
+                      type: "number"
+                      default: 12.34
+                    time:
+                      type: "number"
+                      default: 1234
+                    exercise:
+                      type: "number"
+                      default: 12
+      responses:
+        "201":
+          description: "Institution created successfully"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      created:
+                        type: "boolean"
+                        default: "true"
+        "400":
+          description: "Invalid request"
+        "500":
+          description: "Internal error"
