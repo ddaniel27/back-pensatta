@@ -10,6 +10,7 @@ type UserRepository interface {
 	GetByID(ctx context.Context, id uint64) (domain.User, error)
 	Get(ctx context.Context) ([]domain.User, error)
 	GetByUsername(ctx context.Context, username string) (domain.User, error)
+	GetProfileResumen(ctx context.Context, user domain.User) (map[string]interface{}, error)
 	GetByRole(ctx context.Context, role string) ([]domain.User, error)
 	Update(ctx context.Context, u domain.User) error
 	Delete(ctx context.Context, id uint64) error

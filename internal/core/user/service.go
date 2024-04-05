@@ -55,6 +55,23 @@ func (s *Service) GetUserByRole(_ context.Context, role string) ([]domain.User, 
 	return []domain.User{}, nil
 }
 
+func (s *Service) GetUserProfileResumen(ctx context.Context, user domain.User) (map[string]interface{}, error) {
+	res, err := s.userRepo.GetProfileResumen(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+
+	return map[string]interface{}{
+		"institution_name": res["institution_name"],
+		"last_login":       user.LastLogin,
+		"resumen": map[string]interface{}{
+			"total_exercises": res["total_exercises"],
+			"average_score":   res["average_score"],
+			"average_time":    res["average_time"],
+		},
+	}, nil
+}
+
 func (s *Service) UpdateUser(_ context.Context, u domain.User) error {
 	return nil
 }

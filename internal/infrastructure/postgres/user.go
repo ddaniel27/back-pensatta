@@ -69,6 +69,50 @@ func (r *UserRepository) GetByUsername(ctx context.Context, username string) (do
 	return user, nil
 }
 
+func (r *UserRepository) GetProfileResumen(ctx context.Context, user domain.User) (map[string]interface{}, error) {
+	var totalRecords int64
+	var institution models.InstitutionModel
+	var calification models.CalificationModel
+
+	if err := r.db.WithContext(ctx).
+		Model(&models.RecordModel{}).
+		Where("user_id = ?", user.ID).
+		Count(&totalRecords).Error; err != nil {
+		return nil, err
+	}
+
+	if totalRecords == 0 {
+		totalRecords = 1
+	}
+
+	if err := r.db.WithContext(ctx).
+		Where("id = ?", user.InstitutionID).
+		First(&institution).Error; err != nil {
+		return nil, err
+	}
+
+	if err := r.db.WithContext(ctx).
+		Where("user_id = ?", user.ID).
+		First(&calification).Error; err != nil {
+		if err != gorm.ErrRecordNotFound {
+			return nil, err
+		}
+
+		calification = models.CalificationModel{
+			UserID:       user.ID,
+			AverageScore: 0,
+			AverageTime:  0,
+		}
+	}
+
+	return map[string]interface{}{
+		"institution_name": institution.Name,
+		"average_score":    calification.AverageScore,
+		"average_time":     calification.AverageTime,
+		"total_exercises":  totalRecords,
+	}, nil
+}
+
 func (r *UserRepository) Update(ctx context.Context, u domain.User) error {
 	var um models.UserModel
 	r.db.WithContext(ctx).Table("pensatta_user").Where("username = ?", u.Username).First(&um)
