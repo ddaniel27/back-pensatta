@@ -18,6 +18,8 @@ tags:
     description: "Handle all institutions"
   - name: "Exercise"
     description: "Handle the exercise creation and metrics update"
+  - name: "Profile"
+    description: "Handle all profile functions mostly students"
 paths:
   /register:
     post:
@@ -369,6 +371,143 @@ paths:
                       created:
                         type: "boolean"
                         default: "true"
+        "400":
+          description: "Invalid request"
+        "500":
+          description: "Internal error"
+  
+  /profile/resumen:
+    get:
+      tags:
+        - "Profile"
+      summary: "Gets profile resumen"
+      description: "Get all data for profile resumen"
+      responses:
+        "200":
+          description: "Profile resumen was retrieved"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      msg:
+                        type: "string"
+                        default: "Resumen retrieved"
+                      institution_name:
+                        type: "string"
+                        default: "Nombre de la institucion"
+                      last_login:
+                        type: "string"
+                        default: "2024-04-05T01:31:47.368364066Z"
+                      resumen:
+                        type: "object"
+                        properties:
+                          average_score:
+                            type: "number"
+                            default: 0
+                          average_time:
+                            type: "number"
+                            default: 0
+                          total_exercises:
+                            type: "number"
+                            default: 1
+        "400":
+          description: "Invalid request"
+        "500":
+          description: "Internal error"
+          
+  /profile/metrics:
+    get:
+      tags:
+        - "Profile"
+      summary: "Gets all metrics"
+      description: "Get all metrics registered in system"
+      responses:
+        "200":
+          description: "Metrics was retrieved"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      msg:
+                        type: "string"
+                        default: "Metrics retrieved"
+                      appropiation_values:
+                        type: "object"
+                        properties:
+                          1:
+                            type: "number"
+                            default: 0
+                          2:
+                            type: "number"
+                            default: 0
+                          3:
+                            type: "number"
+                            default: 0
+                      spider_values:
+                        type: "object"
+                        properties:
+                          1:
+                            type: "number"
+                            default: 0
+                          2:
+                            type: "number"
+                            default: 0
+                          3:
+                            type: "number"
+                            default: 0
+                          4:
+                            type: "number"
+                            default: 0
+                          5:
+                            type: "number"
+                            default: 0
+                          6:
+                            type: "number"
+                            default: 0
+        "400":
+          description: "Invalid request"
+        "500":
+          description: "Internal error"
+  
+  /profile/exercises:
+    get:
+      tags:
+        - "Profile"
+      summary: "Gets all exercises"
+      description: "Get all exercises registered in system"
+      responses:
+        "200":
+          description: "Exercises was retrieved"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: "object"
+                    properties:
+                      msg:
+                        type: "string"
+                        default: "History retrieved"
+                      history:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            id:
+                              type: "number"
+                              default: 1
+                            score:
+                              type: "number"
+                              default: 70.5
+                            time:
+                              type: "number"
+                              default: 12345
+                            date:
+                              type: "string"
+                              default: "2024-04-05T01:45:04Z"
         "400":
           description: "Invalid request"
         "500":
